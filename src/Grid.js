@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { img } from "./img";
+import questionMark from "./img/questionMark.svg";
 
 export default function Grid() {
   let matrix = Array(6)
@@ -39,11 +40,17 @@ export default function Grid() {
     else {
       matrix[cell1.y][cell1.x] = (
         <div>
+          <span>
+            <img src={questionMark} alt="img" />
+          </span>
           <img src={img[n]} alt="img" />
         </div>
       );
       matrix[cell2.y][cell2.x] = (
         <div>
+          <span>
+            <img src={questionMark} alt="img" />
+          </span>
           <img src={img[n]} alt="img" />
         </div>
       );
