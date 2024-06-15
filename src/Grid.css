@@ -5,12 +5,19 @@
   padding: 5px;
 }
 
-.grid p {
+.grid div {
   background-color: blueviolet;
-  margin: 0;
-  width: 100%;
   height: 100%;
-  font-size: 200%;
+  position: relative;
+}
+.grid img {
+  background-color: blueviolet;
+  width: 80%;
+  height: 80%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @media (max-width: 365px) {
