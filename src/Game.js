@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { img } from "./img";
 import questionMark from "./img/questionMark.svg";
 
-export default function Grid() {
+export default function Game() {
   const matrix = useRef(
     Array(6)
       .fill()
@@ -63,30 +63,32 @@ export default function Grid() {
         guess[0].children[1].src === guess[1].children[1].src &&
         guess[0].id !== guess[1].id
       ) {
-        correct.current.innerHTML = "صح";
+        correct.current.setAttribute("class", "correct");
         setTimeout(() => {
           guess[0].setAttribute("class", "hidden");
           guess[1].setAttribute("class", "hidden");
         }, 600);
         correctGuesses.current === 17 ? setWin(true) : correctGuesses.current++;
-        console.log(correctGuesses);
       } else {
         if (guess[0].id !== guess[1].id) {
-          correct.current.innerHTML = "خطأ !";
+          correct.current.setAttribute("class", "incorrect");
           setTimeout(() => {
             guess[0].setAttribute("class", "wrong");
             guess[1].setAttribute("class", "wrong");
           }, 600);
         }
       }
-      // setTimeout(() => (correct.current.innerHTML = ""), 5000);
+      setTimeout(() => {
+        correct.current.removeAttribute("class");
+      }, 1000);
       setTimeout(() => (guess = []), 600);
     }
   }
 
-  for (let i = 0; i < 18; i++) {
-    generatePuzzle(matrix.current, i);
-  }
+  if (correctGuesses.current === 0)
+    for (let i = 0; i < 18; i++) {
+      generatePuzzle(matrix.current, i);
+    }
 
   let counter = 0;
   const markup = matrix.current.map((ele) =>
@@ -110,7 +112,12 @@ export default function Grid() {
   if (win) console.log("WIN!!!!!!!!");
   return (
     <div className="game">
-      <p ref={correct}></p>
+      <p ref={correct} id="status"></p>
+      <div className={`overlay ${!win && "not-shown"}`}></div>
+      <div className={`win ${!win && "not-shown"}`}>
+        <p>لقد فزت !</p>
+        <button>اللعب مرة أخرى</button>
+      </div>
       <div className="grid">{markup}</div>
     </div>
   );

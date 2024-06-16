@@ -1,6 +1,8 @@
 .app {
-  background-color: rgba(0, 0, 255, 0.2);
+  background-color: rgba(59, 0, 77);
   display: flex;
   align-items: center;
   flex-direction: column;
+  color: #fff;
+  height: 100vh;
 }

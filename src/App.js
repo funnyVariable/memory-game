@@ -1,4 +1,4 @@
-import Grid from "./Grid";
+import Game from "./Game";
 
 import "./App.css";
 import "./Normalize.css";
@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="app" dir="rtl">
       <h1>لعبة الذاكرة</h1>
-      <Grid />
+      <Game />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 .game {
   position: relative;
-  padding-top: 20px;
+  padding-top: 40px;
 }
 
 .grid {
@@ -9,6 +9,8 @@
   background-color: #d37abd;
   padding: 5px;
   border-radius: 4px;
+  position: relative;
+  z-index: 111;
 }
 
 .grid div {
@@ -78,7 +80,7 @@
 .grid .hidden::after {
   display: none;
 }
-.grid .hidden span {
+.grid .hidden img {
   display: none;
 }
 .grid span img {
@@ -86,13 +88,82 @@
   height: 60%;
 }
 
-.game p {
+.win {
+  background-color: rgb(39, 43, 82, 0.9);
+  color: #fff;
+  width: 80%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 112;
+  font-size: 32px;
+  text-shadow: 0 0 10px #fff;
+  border: 6px dashed rgba(56, 65, 141, 0.8);
+  transition: 0.3s;
+}
+.win p {
+  font-size: 48px;
+}
+.win button {
+  background-color: rgb(255, 255, 255, 0.1);
+  color: #fff;
+  text-shadow: 0 0 10px #fff;
+  padding: 9px;
+  cursor: pointer;
+  border-width: 5px;
+  border-top-color: rgb(255, 255, 255, 0.4);
+  border-left-color: rgb(255, 255, 255, 0.4);
+  border-bottom-color: rgb(255, 255, 255, 0.2);
+  border-right-color: rgb(255, 255, 255, 0.2);
+  transition: 0.3s;
+}
+.win button:hover {
+  background-color: rgb(255, 255, 255, 0.4);
+}
+.not-shown {
+  opacity: 0;
+  z-index: -1 !important;
+}
+.overlay {
+  content: "";
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  z-index: 112;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
+#status {
   position: absolute;
   top: -10px;
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
   font-size: 22px;
+}
+#status::after {
+  content: "";
+  display: block;
+  font-size: 32px;
+  position: relative;
+}
+.correct::after {
+  content: "صح" !important;
+  animation: correct 1s !important;
+  color: greenyellow;
+}
+.incorrect::after {
+  content: "خطأ !" !important;
+  animation: correct 1s !important;
+  color: red;
 }
 
 @media (max-width: 410px) {
@@ -125,5 +196,19 @@
   }
   100% {
     transform: rotate(0);
+  }
+}
+
+@keyframes correct {
+  0% {
+    top: 20px;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: -20px;
+    opacity: 0;
   }
 }
