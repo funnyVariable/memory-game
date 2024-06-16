@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { img } from "./img";
 import questionMark from "./img/questionMark.svg";
 
@@ -15,6 +15,7 @@ export default function Game() {
   const correctGuesses = useRef(0);
   const correct = useRef(0);
   const [win, setWin] = useState(false);
+  const [effect, setEffect] = useState(0);
 
   function rand(end, start = 0) {
     return Math.floor(Math.random() * end + start);
@@ -85,10 +86,17 @@ export default function Game() {
     }
   }
 
-  if (correctGuesses.current === 0)
-    for (let i = 0; i < 18; i++) {
-      generatePuzzle(matrix.current, i);
+  useEffect(() => {
+    if (correctGuesses.current === 0)
+      for (let i = 0; i < 18; i++) {
+        generatePuzzle(matrix.current, i);
+        console.log(i);
+      }
+    console.log("effect");
+    if (effect === 0) {
+      setEffect(1);
     }
+  }, [effect]);
 
   let counter = 0;
   const markup = matrix.current.map((ele) =>
@@ -109,14 +117,14 @@ export default function Game() {
       );
     })
   );
-  if (win) console.log("WIN!!!!!!!!");
+
   return (
     <div className="game">
       <p ref={correct} id="status"></p>
       <div className={`overlay ${!win && "not-shown"}`}></div>
       <div className={`win ${!win && "not-shown"}`}>
         <p>لقد فزت !</p>
-        <button>اللعب مرة أخرى</button>
+        <button onClick={() => window.location.reload()}>اللعب مرة أخرى</button>
       </div>
       <div className="grid">{markup}</div>
     </div>
