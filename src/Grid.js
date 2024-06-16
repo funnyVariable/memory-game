@@ -1,12 +1,20 @@
+import { useRef, useState } from "react";
 import { img } from "./img";
 import questionMark from "./img/questionMark.svg";
 
 export default function Grid() {
-  let matrix = Array(6)
-    .fill()
-    .map(() => Array(6).fill(null));
+  const matrix = useRef(
+    Array(6)
+      .fill()
+      .map(() => Array(6).fill(null))
+  );
 
   let occupiedCells = [];
+
+  let guess = [];
+  const correctGuesses = useRef(0);
+  const correct = useRef(0);
+  const [win, setWin] = useState(false);
 
   function rand(end, start = 0) {
     return Math.floor(Math.random() * end + start);
@@ -44,12 +52,44 @@ export default function Grid() {
     }
   }
 
+  function guessHandler(id) {
+    const target = document.getElementById(id);
+    target.className === "clicked"
+      ? target.removeAttribute("class")
+      : target.setAttribute("class", "clicked");
+    guess.push(target);
+    if (guess[1]) {
+      if (
+        guess[0].children[1].src === guess[1].children[1].src &&
+        guess[0].id !== guess[1].id
+      ) {
+        correct.current.innerHTML = "صح";
+        setTimeout(() => {
+          guess[0].setAttribute("class", "hidden");
+          guess[1].setAttribute("class", "hidden");
+        }, 600);
+        correctGuesses.current === 17 ? setWin(true) : correctGuesses.current++;
+        console.log(correctGuesses);
+      } else {
+        if (guess[0].id !== guess[1].id) {
+          correct.current.innerHTML = "خطأ !";
+          setTimeout(() => {
+            guess[0].setAttribute("class", "wrong");
+            guess[1].setAttribute("class", "wrong");
+          }, 600);
+        }
+      }
+      // setTimeout(() => (correct.current.innerHTML = ""), 5000);
+      setTimeout(() => (guess = []), 600);
+    }
+  }
+
   for (let i = 0; i < 18; i++) {
-    generatePuzzle(matrix, i);
+    generatePuzzle(matrix.current, i);
   }
 
   let counter = 0;
-  let markup = matrix.map((ele) =>
+  const markup = matrix.current.map((ele) =>
     ele.map((ele2) => {
       counter++;
       let id = counter;
@@ -57,12 +97,7 @@ export default function Grid() {
         <div
           key={counter}
           id={counter}
-          onClick={() => {
-            const target = document.getElementById(id);
-            target.className === "clicked"
-              ? target.removeAttribute("class")
-              : target.setAttribute("class", "clicked");
-          }}
+          onClick={() => !guess[1] && guessHandler(id)}
         >
           <span>
             <img src={questionMark} alt="img" />
@@ -72,6 +107,11 @@ export default function Grid() {
       );
     })
   );
-
-  return <div className="grid">{markup}</div>;
+  if (win) console.log("WIN!!!!!!!!");
+  return (
+    <div className="game">
+      <p ref={correct}></p>
+      <div className="grid">{markup}</div>
+    </div>
+  );
 }
