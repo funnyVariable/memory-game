@@ -90,9 +90,7 @@ export default function Game() {
     if (correctGuesses.current === 0)
       for (let i = 0; i < 18; i++) {
         generatePuzzle(matrix.current, i);
-        console.log(i);
       }
-    console.log("effect");
     if (effect === 0) {
       setEffect(1);
     }
