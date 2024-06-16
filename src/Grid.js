@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { img } from "./img";
 import questionMark from "./img/questionMark.svg";
 
@@ -13,7 +12,7 @@ export default function Grid() {
     return Math.floor(Math.random() * end + start);
   }
 
-  function generatePuzzle(matrix) {
+  function generatePuzzle(matrix, id) {
     const width = matrix[0].length;
     const height = matrix.length;
     const n = rand(28);
@@ -38,38 +37,41 @@ export default function Grid() {
     if ((cell1.x === cell2.x && cell1.y === cell2.y) || isCellOccupied)
       generatePuzzle(matrix);
     else {
-      matrix[cell1.y][cell1.x] = (
-        <div>
-          <span>
-            <img src={questionMark} alt="img" />
-          </span>
-          <img src={img[n]} alt="img" />
-        </div>
-      );
-      matrix[cell2.y][cell2.x] = (
-        <div>
-          <span>
-            <img src={questionMark} alt="img" />
-          </span>
-          <img src={img[n]} alt="img" />
-        </div>
-      );
+      matrix[cell1.y][cell1.x] = img[n];
+      matrix[cell2.y][cell2.x] = img[n];
       occupiedCells.push(cell1);
       occupiedCells.push(cell2);
     }
   }
 
   for (let i = 0; i < 18; i++) {
-    generatePuzzle(matrix);
+    generatePuzzle(matrix, i);
   }
 
-  let markup = matrix.map((ele, indx) => (
-    <Fragment key={indx}>
-      {ele.map((ele2, indx2) => (
-        <Fragment key={indx2}>{ele2}</Fragment>
-      ))}
-    </Fragment>
-  ));
+  let counter = 0;
+  let markup = matrix.map((ele) =>
+    ele.map((ele2) => {
+      counter++;
+      let id = counter;
+      return (
+        <div
+          key={counter}
+          id={counter}
+          onClick={() => {
+            const target = document.getElementById(id);
+            target.className === "clicked"
+              ? target.removeAttribute("class")
+              : target.setAttribute("class", "clicked");
+          }}
+        >
+          <span>
+            <img src={questionMark} alt="img" />
+          </span>
+          <img src={ele2} alt="img" />
+        </div>
+      );
+    })
+  );
 
   return <div className="grid">{markup}</div>;
 }
