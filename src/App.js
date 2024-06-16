@@ -17,7 +17,7 @@ function App() {
         <div className="main-menu">
           <button onClick={() => setPlay(true)}>لعب</button>
           <p>لعبة أحجية مطابقة بسيطة بأستخدام مكتبة Reactjs</p>
-          <a href="#">
+          <a href="https://github.com/uhmdkhms/memory-game">
             <span>
               <p>غيت هب</p>
               <p>github</p>
